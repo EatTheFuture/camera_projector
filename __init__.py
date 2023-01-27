@@ -96,7 +96,7 @@ def ensure_camera_project_group(camera, default_aspect=1.0):
     aspect_ratio_2 = group.nodes.new(type='ShaderNodeCombineXYZ')
     aspect_ratio_div = group.nodes.new(type='ShaderNodeMath')
     aspect_ratio_lt = group.nodes.new(type='ShaderNodeMath')
-    aspect_ratio_switch = group.nodes.new(type='ShaderNodeMix')
+    aspect_ratio_switch = group.nodes.new(type='ShaderNodeMixRGB')
     user_transforms = group.nodes.new(type='ShaderNodeVectorMath')
 
     recenter = group.nodes.new(type='ShaderNodeVectorMath')
@@ -261,7 +261,8 @@ def ensure_camera_project_group(camera, default_aspect=1.0):
     aspect_ratio_div.inputs[0].default_value = 1.0
     aspect_ratio_lt.operation = 'LESS_THAN'
     aspect_ratio_lt.inputs[1].default_value = 1.0
-    aspect_ratio_switch.data_type = 'VECTOR'
+    aspect_ratio_switch.blend_type = 'MIX'
+    aspect_ratio_switch.use_clamp = False
 
     user_transforms.operation = 'MULTIPLY'
 
@@ -300,13 +301,13 @@ def ensure_camera_project_group(camera, default_aspect=1.0):
     group.links.new(lens_shift_2.outputs['Vector'], user_translate.inputs[0])
 
     group.links.new(aspect_ratio_div.outputs[0], aspect_ratio_2.inputs['X'])
-    group.links.new(aspect_ratio_1.outputs[0], aspect_ratio_switch.inputs[4])
-    group.links.new(aspect_ratio_2.outputs[0], aspect_ratio_switch.inputs[5])
+    group.links.new(aspect_ratio_1.outputs[0], aspect_ratio_switch.inputs[1])
+    group.links.new(aspect_ratio_2.outputs[0], aspect_ratio_switch.inputs[2])
     group.links.new(aspect_ratio_lt.outputs[0], aspect_ratio_switch.inputs[0])
 
     group.links.new(user_translate.outputs['Vector'], user_rotate.inputs['Vector'])
     group.links.new(user_rotate.outputs['Vector'], user_transforms.inputs[0])
-    group.links.new(aspect_ratio_switch.outputs[1], user_transforms.inputs[1])
+    group.links.new(aspect_ratio_switch.outputs[0], user_transforms.inputs[1])
     group.links.new(user_transforms.outputs['Vector'], recenter.inputs[0])
 
     group.links.new(recenter.outputs['Vector'], output.inputs['Vector'])
