@@ -50,26 +50,25 @@ def ensure_camera_project_group(camera, default_aspect=1.0):
         group = bpy.data.node_groups.new(name, type='ShaderNodeTree')
 
     # Clear all nodes, to start from a clean slate.
+            
     for node in group.nodes:
-        group.nodes.remove(node)
+        group.remove(node)
 
     # Create the group inputs and outputs.
-    if not "Aspect Ratio" in group.inputs:
-        group.inputs.new(type="NodeSocketFloat", name="Aspect Ratio")
-        group.inputs['Aspect Ratio'].default_value = default_aspect
-    if not "Rotation" in group.inputs:
-        group.inputs.new(type="NodeSocketFloat", name="Rotation")
-    if not "Loc X" in group.inputs:
-        group.inputs.new(type="NodeSocketFloat", name="Loc X")
-    if not "Loc Y" in group.inputs:
-        group.inputs.new(type="NodeSocketFloat", name="Loc Y")
-    if not "Vector" in group.outputs:
-        group.outputs.new(type="NodeSocketVector", name="Vector")
+    if not "Aspect Ratio" in group.interface.items_tree:
+        group.interface.new_socket(name="Aspect Ratio", socket_type="NodeSocketFloat", in_out='INPUT')
+        group.interface.items_tree['Aspect Ratio'].default_value = default_aspect
+    if not "Rotation" in group.interface.items_tree:
+        group.interface.new_socket(name="Rotation", socket_type="NodeSocketFloat", in_out='INPUT')
+    if not "Loc X" in group.interface.items_tree:
+        group.interface.new_socket(name="Loc X", socket_type="NodeSocketFloat", in_out='INPUT')
+    if not "Loc Y" in group.interface.items_tree:
+        group.interface.new_socket(name="Loc Y", socket_type="NodeSocketFloat", in_out='INPUT')
+    if not "Vector" in group.interface.items_tree:
+        group.interface.new_socket(name="Vector", socket_type="NodeSocketVector", in_out='OUTPUT')
 
     #-------------------
     # Create the nodes.
-    input = group.nodes.new(type='NodeGroupInput')
-    output = group.nodes.new(type='NodeGroupOutput')
 
     camera_transform = group.nodes.new(type='ShaderNodeTexCoord')
     lens = group.nodes.new(type='ShaderNodeValue')
