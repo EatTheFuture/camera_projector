@@ -18,9 +18,9 @@
 
 bl_info = {
     "name": "Camera Projector",
-    "version": (0, 1, 0),
+    "version": (0, 2, 0),
     "author": "Nathan Vegdahl, Ian Hubert",
-    "blender": (3, 0, 0),
+    "blender": (4, 0, 0),
     "description": "Project textures from perspective cameras accurately.",
     "location": "Camera properties",
     # "doc_url": "",
