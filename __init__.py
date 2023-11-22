@@ -53,18 +53,20 @@ def ensure_camera_project_group(camera, default_aspect=1.0):
     for node in group.nodes:
         group.nodes.remove(node)
 
-    # Create the group inputs and outputs.
+    # Create the group inputs.
     if not "Aspect Ratio" in group.interface.items_tree:
-        group.interface.new_socket(name="Aspect Ratio", socket_type="NodeSocketFloat", in_out='INPUT')
-        group.interface.items_tree['Aspect Ratio'].default_value = default_aspect
+        socket = group.interface.new_socket(name="Aspect Ratio", socket_type='NodeSocketFloat', in_out='INPUT')
+        socket.default_value = default_aspect
     if not "Rotation" in group.interface.items_tree:
-        group.interface.new_socket(name="Rotation", socket_type="NodeSocketFloat", in_out='INPUT')
+        group.interface.new_socket(name="Rotation", socket_type='NodeSocketFloat', in_out='INPUT')
     if not "Loc X" in group.interface.items_tree:
-        group.interface.new_socket(name="Loc X", socket_type="NodeSocketFloat", in_out='INPUT')
+        group.interface.new_socket(name="Loc X", socket_type='NodeSocketFloat', in_out='INPUT')
     if not "Loc Y" in group.interface.items_tree:
-        group.interface.new_socket(name="Loc Y", socket_type="NodeSocketFloat", in_out='INPUT')
+        group.interface.new_socket(name="Loc Y", socket_type='NodeSocketFloat', in_out='INPUT')
+
+    # Create the group outputs.
     if not "Vector" in group.interface.items_tree:
-        group.interface.new_socket(name="Vector", socket_type="NodeSocketVector", in_out='OUTPUT')
+        group.interface.new_socket(name="Vector", socket_type='NodeSocketVector', in_out='OUTPUT')
 
     #-------------------
     # Create the nodes.
